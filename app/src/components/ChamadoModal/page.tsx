@@ -31,7 +31,6 @@ export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModa
   const [open, setOpen] = useState(false);
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },

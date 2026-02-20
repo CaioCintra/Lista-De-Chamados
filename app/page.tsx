@@ -108,7 +108,7 @@ export default function Home() {
   return (
     <>
       <header
-        className="relative flex p-7 flex-col sm:flex-row sm:items-center gap-4 sm:gap-0"
+        className="fixed z-10 flex p-7 flex-col sm:flex-row sm:items-center gap-4 sm:gap-0"
         style={{
           backgroundColor: token.colorPrimary,
           width: "100%",

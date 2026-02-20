@@ -33,7 +33,7 @@ export default function Filter({
   onSortOrderChange,
 }: FilterProps) {
   return (
-    <div className="w-full flex justify-center mb-10">
+    <div className="sticky w-full flex justify-center mb-20 sm:mb-0 z-10 top-40 sm:top-24">
       <div className="w-full max-w-5xl bg-white p-6 rounded-xl shadow-md space-y-6">
         <div className="flex flex-wrap gap-4 justify-center">
           <Select

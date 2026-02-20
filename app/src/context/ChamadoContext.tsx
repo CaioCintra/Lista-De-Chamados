@@ -68,7 +68,7 @@ export function ChamadoProvider({
 export function useChamado() {
   const context = useContext(ChamadoContext);
   if (!context) {
-    throw new Error("useChamado must be used within ChamadoProvider");
+    throw new Error("Erro: useChamado deve ser usado dentro de um ChamadoProvider");
   }
   return context;
 }
