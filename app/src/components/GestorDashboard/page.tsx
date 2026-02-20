@@ -38,62 +38,56 @@ interface Chamado {
 }
 
 interface GestorDashboardProps {
-  chamados: Chamado[];
+  chamados?: Chamado[]; // ← agora opcional
 }
 
-export default function GestorDashboard({ chamados }: GestorDashboardProps) {
-  const chamadosPorArea = chamados.reduce(
-    (acc, chamado) => {
-      const area = chamado.area;
-      const existing = acc.find((item) => item.name === area);
-      if (existing) {
-        existing.chamados += 1;
-      } else {
-        acc.push({ name: area, chamados: 1 });
-      }
-      return acc;
-    },
-    [] as Array<{ name: string; chamados: number }>,
-  );
+export default function GestorDashboard({
+  chamados = [], // ← garante array sempre
+}: GestorDashboardProps) {
+  const chamadosPorArea = chamados.reduce<
+    Array<{ name: string; chamados: number }>
+  >((acc, chamado) => {
+    const existing = acc.find((item) => item.name === chamado.area);
+    if (existing) {
+      existing.chamados += 1;
+    } else {
+      acc.push({ name: chamado.area, chamados: 1 });
+    }
+    return acc;
+  }, []);
 
-  const chamadosPorStatus = chamados.reduce(
-    (acc, chamado) => {
-      const status = chamado.status;
-      const existing = acc.find((item) => item.name === status);
-      if (existing) {
-        existing.chamados += 1;
-      } else {
-        acc.push({ name: status, chamados: 1 });
-      }
-      return acc;
-    },
-    [] as Array<{ name: string; chamados: number }>,
-  );
+  const chamadosPorStatus = chamados.reduce<
+    Array<{ name: string; chamados: number }>
+  >((acc, chamado) => {
+    const existing = acc.find((item) => item.name === chamado.status);
+    if (existing) {
+      existing.chamados += 1;
+    } else {
+      acc.push({ name: chamado.status, chamados: 1 });
+    }
+    return acc;
+  }, []);
+
+  const chamadosPorPrioridade = chamados.reduce<
+    Array<{ name: string; chamados: number }>
+  >((acc, chamado) => {
+    const existing = acc.find((item) => item.name === chamado.prioridade);
+    if (existing) {
+      existing.chamados += 1;
+    } else {
+      acc.push({ name: chamado.prioridade, chamados: 1 });
+    }
+    return acc;
+  }, []);
 
   const tempoMedioEmHoras =
     chamados.length > 0
       ? chamados.reduce((acc, chamado) => {
           const abertura = new Date(chamado.abertura);
           const agora = new Date();
-          const diffMs = agora.getTime() - abertura.getTime();
-          const diffHoras = diffMs / (1000 * 60 * 60);
-          return acc + diffHoras;
+          return acc + (agora.getTime() - abertura.getTime()) / 3600000;
         }, 0) / chamados.length
       : 0;
-
-  const chamadosPorPrioridade = chamados.reduce(
-    (acc, chamado) => {
-      const prioridade = chamado.prioridade;
-      const existing = acc.find((item) => item.name === prioridade);
-      if (existing) {
-        existing.chamados += 1;
-      } else {
-        acc.push({ name: prioridade, chamados: 1 });
-      }
-      return acc;
-    },
-    [] as Array<{ name: string; chamados: number }>,
-  );
 
   const COLORS = {
     Aberto: "#ec6725",
@@ -119,6 +113,7 @@ export default function GestorDashboard({ chamados }: GestorDashboardProps) {
             />
           </Card>
         </Col>
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -129,6 +124,7 @@ export default function GestorDashboard({ chamados }: GestorDashboardProps) {
             />
           </Card>
         </Col>
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -138,11 +134,14 @@ export default function GestorDashboard({ chamados }: GestorDashboardProps) {
             />
           </Card>
         </Col>
+
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Responsáveis"
-              value={new Set(chamados.map((c) => c.responsavel)).size}
+              value={
+                new Set(chamados.map((c) => c.responsavel).filter(Boolean)).size
+              }
               prefix={<TeamOutlined />}
             />
           </Card>
