@@ -143,7 +143,7 @@ export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModa
             <Controller
               name="descricao"
               control={control}
-              render={({ field }) => <TextArea {...field} rows={4} />}
+              render={({ field }) => <TextArea {...field} rows={4} style={{ resize: "none" }}/>}
             />
           </Form.Item>
 

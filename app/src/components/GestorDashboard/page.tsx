@@ -102,7 +102,7 @@ export default function GestorDashboard({
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className="w-full mt-44 sm:mt-20">
       <Row gutter={[16, 16]} style={{ marginBottom: "2rem" }}>
         <Col xs={24} sm={12} lg={6}>
           <Card>
