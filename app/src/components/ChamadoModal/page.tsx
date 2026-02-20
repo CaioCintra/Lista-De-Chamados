@@ -1,20 +1,21 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, message, Modal, Input, Select, Form, Tooltip } from "antd";
+import { Button, Modal, Input, Select, Form, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-const area = ["Refrigeração", "Energia", "Ar-condicionado", "Água"] as const;
-const prioridade = ["Crítica", "Alta", "Média", "Baixa"] as const;
+const areas = ["Refrigeração", "Energia", "Ar-condicionado", "Água"] as const;
+const prioridades = ["Crítica", "Alta", "Média", "Baixa"] as const;
 
 const schema = z.object({
   titulo: z.string().min(1, "Título é obrigatório"),
-  area: z.enum(area),
-  prioridade: z.enum(prioridade),
+  area: z.enum(areas),
+  prioridade: z.enum(prioridades),
   descricao: z.string().min(1, "Descrição é obrigatória"),
   equipamento: z.string().min(1, "Equipamento é obrigatório"),
   instalacao: z.string().min(1, "Instalação é obrigatória"),
@@ -27,7 +28,7 @@ interface ChamadoModalProps {
   onSubmit?: (data: FormData) => void;
 }
 
-export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModalProps) {
+export default function ChamadoModal({ onSubmit }: ChamadoModalProps) {
   const [open, setOpen] = useState(false);
 
   const {
@@ -52,11 +53,8 @@ export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModa
     if (open) reset();
   }, [open, reset]);
 
-  const onFormSubmit = (data: FormData) => {
-    if (externalOnSubmit) {
-      externalOnSubmit(data);
-    }
-    message.success("Chamado criado com sucesso!");
+  const submitHandler = (data: FormData) => {
+    onSubmit?.(data);
     setOpen(false);
     reset();
   };
@@ -70,119 +68,115 @@ export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModa
         footer={null}
         destroyOnHidden
       >
-        <Form layout="vertical" component="form" onFinish={handleSubmit(onFormSubmit)}>
+        <Form layout="vertical" onFinish={handleSubmit(submitHandler)}>
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Título</span>}
             validateStatus={errors.titulo ? "error" : ""}
             help={errors.titulo?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="titulo">Título</label>
             <Controller
               name="titulo"
               control={control}
-              render={({ field }) => <Input {...field} />}
+              render={({ field }) => <Input {...field} id="titulo" />}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Área</span>}
             validateStatus={errors.area ? "error" : ""}
             help={errors.area?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="area">Área</label>
             <Controller
               name="area"
               control={control}
               render={({ field }) => (
                 <Select
-                  placeholder="Selecione uma área"
-                  value={field.value}
-                  onChange={field.onChange}
-                >
-                  {area.map((item) => (
-                    <Select.Option key={item} value={item}>
-                      {item}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  {...field}
+                  id="area"
+                  options={areas.map((item) => ({
+                    label: item,
+                    value: item,
+                  }))}
+                  onChange={(value) => field.onChange(value)}
+                />
               )}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Prioridade</span>}
             validateStatus={errors.prioridade ? "error" : ""}
             help={errors.prioridade?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="prioridade">Prioridade</label>
             <Controller
               name="prioridade"
               control={control}
               render={({ field }) => (
                 <Select
-                  placeholder="Selecione uma prioridade"
-                  value={field.value}
-                  onChange={field.onChange}
-                >
-                  {prioridade.map((item) => (
-                    <Select.Option key={item} value={item}>
-                      {item}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  {...field}
+                  id="prioridade"
+                  options={prioridades.map((item) => ({
+                    label: item,
+                    value: item,
+                  }))}
+                  onChange={(value) => field.onChange(value)}
+                />
               )}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Descrição</span>}
             validateStatus={errors.descricao ? "error" : ""}
             help={errors.descricao?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="descricao">Descrição</label>
             <Controller
               name="descricao"
               control={control}
-              render={({ field }) => <TextArea {...field} rows={4} style={{ resize: "none" }}/>}
+              render={({ field }) => (
+                <TextArea
+                  {...field}
+                  id="descricao"
+                  rows={4}
+                  style={{ resize: "none" }}
+                />
+              )}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Equipamento</span>}
             validateStatus={errors.equipamento ? "error" : ""}
             help={errors.equipamento?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="equipamento">Equipamento</label>
             <Controller
               name="equipamento"
               control={control}
-              render={({ field }) => <Input {...field} />}
+              render={({ field }) => <Input {...field} id="equipamento" />}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Instalação</span>}
             validateStatus={errors.instalacao ? "error" : ""}
             help={errors.instalacao?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="instalacao">Instalação</label>
             <Controller
               name="instalacao"
               control={control}
-              render={({ field }) => <Input {...field} />}
+              render={({ field }) => <Input {...field} id="instalacao" />}
             />
           </Form.Item>
 
           <Form.Item
-            label={<span style={{ fontWeight: "600" }}>Responsável (Opcional)</span>}
             validateStatus={errors.responsavel ? "error" : ""}
             help={errors.responsavel?.message}
-            style={{ marginBottom: 16 }}
           >
+            <label htmlFor="responsavel">Responsável (Opcional)</label>
             <Controller
               name="responsavel"
               control={control}
-              render={({ field }) => <Input {...field} />}
+              render={({ field }) => <Input {...field} id="responsavel" />}
             />
           </Form.Item>
 
@@ -196,6 +190,7 @@ export default function ChamadoModal({ onSubmit: externalOnSubmit }: ChamadoModa
 
       <Tooltip title="Criar novo chamado">
         <Button
+          aria-label="Novo Chamado"
           type="primary"
           shape="circle"
           size="large"

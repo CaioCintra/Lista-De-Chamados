@@ -29,6 +29,20 @@ bun dev
 
 Acesse o sistema entrando em: [http://localhost:3000](http://localhost:3000) no seu navegador.
 
+## Testes
+
+Foram criados alguns poucos testes para o formulário, eles podem ser executados pelos comando a seguir:
+
+```bash
+npm test
+# ou
+yarn test
+# ou
+pnpm test
+# ou
+bun test
+```
+
 ## Decisões de projeto
 
 ### Volume de dados
@@ -48,6 +62,7 @@ Outra decisão foi de optar por ícones ao invés de texto em alguns botões (co
 Com o tempo limitado eu não pude me atentar muito com o quão bonito está o sistema e seus componentes, eu poderia estilizar melhor, colocar mais animações tornando mais agradável visualmente com mais interações e melhorar a adaptação para mobile que foi apenas fazer os componentes se encaixarem em certas telas.
 Além disso foram feitas apenas funcionalidades para listar, ver detalhes e cadastrar chamados, nada para editar (alterar nome, status, etc) ou para excluir um chamado, considerando um sistema que fosse para produção isso seria necessário.
 Isso sem considerar um sistema de cadastro de usuário, tendo em vista que, no momento, qualquer um pode cadastrar um chamado.
+Por fim, não pude focar muito nos testes, foi criado apenas testes para o formulário e foram poucos, seria possível criar mais testes para ele e criar testes e2e para outras partes do sistema, por exemplo.
 
 ## Perguntas conceituais
 
