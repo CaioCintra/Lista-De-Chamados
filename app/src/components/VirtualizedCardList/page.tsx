@@ -19,17 +19,17 @@ interface Chamado {
 }
 
 interface VirtualizedCardListProps {
-  chamados: Chamado[];
-  onCardClick: (chamado: Chamado) => void;
+  chamados?: Chamado[];
+  onCardClick?: (chamado: Chamado) => void;
   isLoading?: boolean;
 }
 
 export default function VirtualizedCardList({
-  chamados,
-  onCardClick,
+  chamados = [],
+  onCardClick = () => {},
   isLoading = false,
 }: VirtualizedCardListProps) {
-  if (chamados.length === 0) {
+  if (!isLoading && chamados.length === 0) {
     return (
       <div
         className="flex flex-col items-center justify-center"
@@ -48,7 +48,6 @@ export default function VirtualizedCardList({
       itemContent={(index, chamado) => (
         <div style={{ paddingTop: "3rem", paddingBottom: "1rem" }}>
           <StatCard
-            key={chamado.id}
             chamado={chamado}
             loading={isLoading}
             onClick={() => onCardClick(chamado)}

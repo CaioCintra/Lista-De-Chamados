@@ -30,19 +30,24 @@ interface Chamado {
 }
 
 interface CardProps {
-  chamado: Chamado;
-  loading: boolean;
-  onClick: () => void;
+  chamado?: Chamado;
+  loading?: boolean;
+  onClick?: () => void;
 }
 
-export default function StatCard({ chamado, loading, onClick }: CardProps) {
+export default function StatCard({
+  chamado,
+  loading = false,
+  onClick = () => {},
+}: CardProps) {
+  if (!chamado) return null;
+
   return (
     <Card
       loading={loading}
-      key={chamado.id}
       className="p-4 rounded cursor-pointer 
-             transition-transform duration-200 ease-in-out
-             hover:shadow-lg hover:scale-105"
+      transition-transform duration-200 ease-in-out
+      hover:shadow-lg hover:scale-105"
       onClick={onClick}
     >
       <h2 className="font-bold">{chamado.titulo}</h2>
